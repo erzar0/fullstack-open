@@ -24,11 +24,9 @@ const Authors = ({ show, authors }) => {
     updateAuthorBday({
       variables: { name: authorName.value, setBornTo: parseInt(birthday) },
     });
-    // setAuthorName("");
+    setAuthorName("");
     setBirthday("");
   };
-
-  console.log(authorName);
 
   if (!show) {
     return null;

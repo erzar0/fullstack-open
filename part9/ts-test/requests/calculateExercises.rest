@@ -1,0 +1,7 @@
+post http://localhost:3003/exercise-stats
+Content-Type: application/json
+
+{
+    "exHours": [1,2,3,4,5,6,7],
+    "target": 2
+}
