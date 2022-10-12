@@ -2,13 +2,13 @@ import { CoursePart } from "../types";
 type Props = { courseParts: CoursePart[] };
 const Total = ({ courseParts }: Props) => {
   return (
-    <p>
+    <h2>
       Number of exercises{" "}
       {courseParts.reduce(
         (carry: number, part: CoursePart) => carry + part.exerciseCount,
         0
       )}
-    </p>
+    </h2>
   );
 };
 
