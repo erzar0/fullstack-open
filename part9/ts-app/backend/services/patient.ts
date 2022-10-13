@@ -1,5 +1,5 @@
 import { newPatient, patient, safePatient } from "../types/types";
-import { savedPatients } from "../data/patients";
+import savedPatients from "../data/patients";
 import { v1 as uuid } from "uuid";
 
 let patients: patient[] = [...savedPatients];
