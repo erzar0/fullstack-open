@@ -2,18 +2,31 @@ import { newPatient, patient, safePatient } from "../types/types";
 import { savedPatients } from "../data/patients";
 import { v1 as uuid } from "uuid";
 
-let patients = [...savedPatients];
-const getSafePatients = (): safePatient[] => {
-  return patients.map(({ id, name, dateOfBirth, gender, occupation }) => {
-    return { id, name, dateOfBirth, gender, occupation };
-  });
+let patients: patient[] = [...savedPatients];
+const getSafePatients = (): Array<safePatient> => {
+  return patients.map((p) => toSafe(p));
 };
 
-export const addPatient = (p: newPatient): patient => {
+const getOnePatient = (ID: string): patient => {
+  const patientsFound: patient[] = patients.filter((p) => p.id === ID);
+  return patientsFound[0];
+};
+
+const addPatient = (p: newPatient): patient => {
   // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-  const pat = { ...p, id: uuid() as string };
-  patients = patients.concat(pat);
+  const pat: patient = { ...p, id: uuid() } as patient;
+  patients = [...patients, pat];
   return pat;
 };
 
-export default { getSafePatients };
+function toSafe({
+  id,
+  name,
+  dateOfBirth,
+  gender,
+  occupation,
+}: patient): safePatient {
+  return { id, name, dateOfBirth, gender, occupation };
+}
+
+export default { getSafePatients, getOnePatient, addPatient };

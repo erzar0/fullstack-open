@@ -1,23 +1,31 @@
 import express from "express";
-import { Request, Response } from "express";
 const patientRouter = express.Router();
-import { newPatient, patient, safePatient } from "../types/types";
+import { newPatient, safePatient, patient } from "../types/types";
 import patientService from "../services/patient";
-// import { savedPatients } from "../data/patients";
-// import { v1 as uuid } from "uuid";
-// const patients: Array<patient> = [...savedPatients];
+import { toNewPatient } from "../types/typeUtils";
 
-patientRouter.get("/patients", (_req, res) => {
+patientRouter.get("/", (_req, res) => {
   const safePatients: Array<safePatient> = patientService.getSafePatients();
   res.json(safePatients);
 });
 
-patientRouter.post(
-  "/patients",
-  (req: Request<null, newPatient, patient>, res: Response<patient>) => {
-    const newPatient: patient = req.body;
-    res.json(newPatient);
+patientRouter.post("/", (req, res) => {
+  try {
+    const newPatient: newPatient = toNewPatient(req.body);
+    const addedPatient: patient = patientService.addPatient(newPatient);
+    res.json(addedPatient);
+  } catch (e) {
+    let errorMessage = "Exception failed";
+    if (e instanceof Error) {
+      errorMessage = e.message;
+    }
+    res.status(400).json({ error: errorMessage });
   }
-);
+});
 
+patientRouter.get("/:id", (req, res) => {
+  const id = req.params.id;
+  const patient: patient = patientService.getOnePatient(id);
+  res.json(patient);
+});
 export default patientRouter;

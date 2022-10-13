@@ -9,7 +9,7 @@ const PORT = 3001;
 app.use(cors());
 
 app.use("/api", diagnoseRouter);
-app.use("/api", patientRouter);
+app.use("/api/patients", patientRouter);
 app.get("/api/ping", (_req, res) => {
   console.log("someone pinged here");
   res.send("pong");
