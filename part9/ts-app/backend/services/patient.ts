@@ -1,4 +1,10 @@
-import { newPatient, patient, safePatient } from "../types/types";
+import {
+  Entry,
+  newEntry,
+  newPatient,
+  patient,
+  safePatient,
+} from "../types/types";
 import savedPatients from "../data/patients";
 import { v1 as uuid } from "uuid";
 
@@ -19,6 +25,18 @@ const addPatient = (p: newPatient): patient => {
   return pat;
 };
 
+const addEntryForPatient = (e: newEntry, patientId: string): patient | null => {
+  let patientToReturn: patient | null = null;
+  savedPatients.map((p) => {
+    if (patientId === p.id && e) {
+      const fullEntry: Entry = { ...e, id: "somestring" };
+      p.entries = p.entries ? [...p.entries, fullEntry] : [fullEntry];
+      patientToReturn = p;
+    }
+  });
+  return patientToReturn;
+};
+
 function toSafe({
   id,
   name,
@@ -29,4 +47,9 @@ function toSafe({
   return { id, name, dateOfBirth, gender, occupation };
 }
 
-export default { getSafePatients, getOnePatient, addPatient };
+export default {
+  getSafePatients,
+  getOnePatient,
+  addPatient,
+  addEntryForPatient,
+};
